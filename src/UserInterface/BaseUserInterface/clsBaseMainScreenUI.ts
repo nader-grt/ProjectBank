@@ -2,11 +2,12 @@ import clsInputValidate from "../../packageUsing/clsInputValidate";
 import clsBaseScreenUI from "../clsBaseScreenUI";
 
 import * as readlineSync from 'readline-sync';
-import clsGetAllClientScreenUI from "../SubUserInterface/clsGetAllClientScreenUI";
-import clsAddClientScreenUI from "../SubUserInterface/clsAddCLientScreenUI";
-import clsUpdateCLientScreenUI from "../SubUserInterface/clsUpdateCLientScreenUI";
-import clsDeleteClientScreenUI from "../SubUserInterface/clsDeleteClientScreenUI";
-import clsFindClientScreenUI from "../SubUserInterface/clsFindClientScreenUI";
+import clsGetAllClientScreenUI from "../ClientBankScreenUI/clsGetAllClientScreenUI";
+import clsAddClientScreenUI from "../ClientBankScreenUI/clsAddCLientScreenUI";
+import clsUpdateCLientScreenUI from "../ClientBankScreenUI/clsUpdateCLientScreenUI";
+import clsDeleteClientScreenUI from "../ClientBankScreenUI/clsDeleteClientScreenUI";
+import clsFindClientScreenUI from "../ClientBankScreenUI/clsFindClientScreenUI";
+import clsTransactionBaseMainScreenUI from "./clsTransactionBaseMainScreenUI";
 
 export enum enOption {
   showListClients = 1,
@@ -14,7 +15,8 @@ export enum enOption {
   UpdateClient = 3,
   DeleteClient = 4,
   FindCLient = 5,
-  EnScreen   =6 ,
+  TransactionMenu = 6,
+  EnScreen   =7 ,
 }
 
 export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
@@ -75,6 +77,13 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
 
   }
 
+  private static async _TransactionMenu():Promise<void>
+  {
+
+      await clsTransactionBaseMainScreenUI.ShowTransactionMenu() ;
+
+  }
+
   private static _EndScreen():void
   {
 
@@ -116,6 +125,14 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
        await   clsBaseMainScreenUI._FindClient();
           clsBaseMainScreenUI._GobackToMainMenu() ;
           break;
+
+          //TransactionMenu
+          case enOption.TransactionMenu:
+            clsBaseMainScreenUI.ClearScreen() ;
+         await   clsBaseMainScreenUI._TransactionMenu();
+            clsBaseMainScreenUI._GobackToMainMenu() ;
+            break;
+
         case enOption.EnScreen:
           clsBaseMainScreenUI.ClearScreen() ;
           clsBaseMainScreenUI._EndScreen();

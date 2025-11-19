@@ -121,4 +121,25 @@ export default class clsHandleFile {
      
     }
   }
+
+
+
+
+
+  public static async Save(client: clsBankClientUseCase): Promise<void> {
+    let vClients: clsBankClientUseCase[] = [];
+    vClients = await clsHandleFile.LoadDataFromFile();
+
+    //  console.log("first get client for updated",client,"acc updated" ,client.getAccountNumber  ,  "updateeeeeeeeeee vclients ******** \t",vClients)
+    for (let i = 0; i < vClients.length; i++) {
+      if (vClients[i].getAccountNumber === client.getAccountNumber) {
+   
+
+        vClients[i] = client;
+
+        break;
+      }
+    }
+    await clsHandleFile.SaveDataToFile(vClients);
+  }
 }

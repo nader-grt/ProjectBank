@@ -1,3 +1,5 @@
+import clsAddClientController from "../../controllers/ClientBankController/AddClientController";
+import clsHandleFile from "../../filesystem/clsHandleFile";
 import clsInputValidate from "../../packageUsing/clsInputValidate";
 import clsPersonUseCase from "../PersonUseCase/clsPersonUseCase";
 
@@ -69,7 +71,21 @@ export class clsBankClientUseCase extends clsPersonUseCase {
     return this._Mode;
   }
 
+  public  async  Deposite(amount:number,client:clsBankClientUseCase) {
+       
+    this._BalanceAccount += amount ;
+
+  
 
 
+ await clsHandleFile.Save(client) ;
+  }
+  public  async  Withdraw(amount:number,client:clsBankClientUseCase) {
+       
+    this._BalanceAccount -= amount ;
+
+
+ await clsHandleFile.Save(client) ;
+  }
  
 }
