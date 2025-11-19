@@ -59,16 +59,7 @@ export class clsBankClientUseCase extends clsPersonUseCase {
     return this._Mode === enMode.EmptyMode;
   }
 
-  public Print(): void {
-    console.log("\nCard Info");
-    console.log("Account Number", this._AccountNumber);
-    console.log("FirstName", this.getFirstName);
-    console.log("LastName", this.getLastName);
-    console.log("Email", this.getEmail);
-    console.log("Phone", this.getPhone);
-    console.log("BalanceAccount", this._BalanceAccount);
-    console.log("PinCode", this._PinCode);
-  }
+ 
 
   public set setMode(mode:enMode) {
      this._Mode  = mode;
@@ -78,17 +69,7 @@ export class clsBankClientUseCase extends clsPersonUseCase {
     return this._Mode;
   }
 
-  public static ReadClientInfo(client: clsBankClientUseCase): void {
-    client.setFirstName = clsInputValidate.ReadString("Enter FirstName \n");
-    client.setLastName = clsInputValidate.ReadString(" Enter lastName  \n");
-    client.setEmail = clsInputValidate.ReadString("    Enter email \n");
-    client.setPhone = clsInputValidate.ReadString("    Enter phone  \n");
-    client.setPinCode = clsInputValidate.ReadString("  Enter  Code Pine  \n");
-    let bAccount: string = clsInputValidate.ReadString(
-      "Enter  Balance Account  \n"
-    );
-    client.setBalanceAccount = parseFloat(bAccount);
-  }
 
-  public Save() {}
+
+ 
 }

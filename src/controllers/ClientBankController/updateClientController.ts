@@ -3,46 +3,13 @@ import {
   enMode,
 } from "../../useCases/ClientBankUseCase/clsBankClientUseCase";
 import clsHandleFile, { TypeResultSave } from "../../filesystem/clsHandleFile";
-import controllerFindClientByAccountNumber from "./FindClientController";
-import clsInputValidate from "../../packageUsing/clsInputValidate";
+
 
 export default class clsUpdateClientController extends clsBankClientUseCase {
 
 
-  public static async UpdateCLient() {
-    let AccountNumber: string = "";
-    let isAccountNumber: boolean;
-
-   
-    AccountNumber = clsInputValidate.ReadString(
-      "Please Enter Your Account Number ? \n"
-    );
-
-    // Check if account exists
-    while (
-      !(isAccountNumber =
-        await controllerFindClientByAccountNumber.IsExistClient(AccountNumber))
-    ) {
-      AccountNumber = clsInputValidate.ReadString(
-        "Account Number is not found, enter again ? \n"
-      );
-    }
-
-    const client: clsBankClientUseCase =
-      await controllerFindClientByAccountNumber.find(AccountNumber);
-
-    console.log("Client Info: \t \n");
-    console.log(
-      "-----------------------------------------------------------------\n"
-    );
-    client.Print();
-    clsBankClientUseCase.ReadClientInfo(client);
-
-    console.log("Client Info: UPDATED !\t \n");
-    console.log(
-      "-----------------------------------------------------------------\n"
-    );
-    client.Print();
+  public static async UpdateCLient(client:clsBankClientUseCase) {
+  
 
     let SaveResult: TypeResultSave;
     SaveResult = await clsUpdateClientController.Save(client);

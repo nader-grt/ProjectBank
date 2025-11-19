@@ -8,25 +8,10 @@ export default class clsDeleteClientController extends clsBankClientUseCase {
 
 
 
-          public static async DeleteClient():Promise<void>
+          public static async DeleteClient( client : clsBankClientUseCase):Promise<void>
           {
 
-            const AccountNumber = clsInputValidate.ReadString(
-                "Please Enter Your Account Number ? "
-            );
-
-            const isExist:boolean =           await clsAddClientController.FindAccountNumberInFile(AccountNumber)
-                  
-
-                  if(!isExist)
-                  {
-                    console.log(`Account Number ${AccountNumber} already exists. Try another one.`);
-                    return;
-
-                  }
-                         
-
-                  const client = new clsBankClientUseCase( enMode.DeleteMode,  "",   "", "", "", AccountNumber, "",  0 );
+          
 
 
 
@@ -36,7 +21,7 @@ export default class clsDeleteClientController extends clsBankClientUseCase {
                   switch (SaveResult) {
                     case TypeResultSave.Success:
                       console.log("Result Mode of client :\t",client.IsEmpty())
-                      client.Print() ;
+                   //   client.Print() ;
                       console.log("Delete Client with Succes oky");
                       break;
                     case TypeResultSave.Success:

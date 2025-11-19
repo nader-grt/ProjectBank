@@ -5,6 +5,8 @@ import * as readlineSync from 'readline-sync';
 import clsGetAllClientScreenUI from "../SubUserInterface/clsGetAllClientScreenUI";
 import clsAddClientScreenUI from "../SubUserInterface/clsAddCLientScreenUI";
 import clsUpdateCLientScreenUI from "../SubUserInterface/clsUpdateCLientScreenUI";
+import clsDeleteClientScreenUI from "../SubUserInterface/clsDeleteClientScreenUI";
+import clsFindClientScreenUI from "../SubUserInterface/clsFindClientScreenUI";
 
 export enum enOption {
   showListClients = 1,
@@ -62,8 +64,15 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
      await  clsUpdateCLientScreenUI.UpdateClient()
   }
 
-  private static _DeleteClient() {
-    console.log(" delete    client \t **********************************");
+  private static async  _DeleteClient() {
+    await clsDeleteClientScreenUI.DeleteCLient()
+  }
+
+  private static async _FindClient():Promise<void>
+  {
+    
+      await clsFindClientScreenUI.FindClient()
+
   }
 
   private static _EndScreen():void
@@ -97,9 +106,16 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
         break;
       case enOption.DeleteClient:
         clsBaseMainScreenUI.ClearScreen() ;
-        clsBaseMainScreenUI._DeleteClient();
+     await   clsBaseMainScreenUI._DeleteClient();
         clsBaseMainScreenUI._GobackToMainMenu() ;
         break;
+        //_FindClient()
+
+        case enOption.FindCLient:
+          clsBaseMainScreenUI.ClearScreen() ;
+       await   clsBaseMainScreenUI._FindClient();
+          clsBaseMainScreenUI._GobackToMainMenu() ;
+          break;
         case enOption.EnScreen:
           clsBaseMainScreenUI.ClearScreen() ;
           clsBaseMainScreenUI._EndScreen();
@@ -121,8 +137,8 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
    
     console.log("".padEnd(37, " ") + "\t[1] Show Client List.\n");
     console.log("".padEnd(37, " ") + "\t[2] Add New Client.\n");
-    console.log("".padEnd(37, " ") + "\t[3] Delete Client.\n");
-    console.log("".padEnd(37, " ") + "\t[4] Update Client Info.\n");
+    console.log("".padEnd(37, " ") + "\t[3] Update Client Info.\n");
+    console.log("".padEnd(37, " ") + "\t[4] Delete Client.\n");
     console.log("".padEnd(37, " ") + "\t[5] Find Client.\n");
     console.log("".padEnd(37, " ") + "\t[6] Transactions.\n");
     console.log("".padEnd(37, " ") + "\t[7] Manage Users.\n");
