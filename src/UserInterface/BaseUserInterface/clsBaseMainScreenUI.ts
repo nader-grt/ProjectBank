@@ -8,6 +8,7 @@ import clsUpdateCLientScreenUI from "../ClientBankScreenUI/clsUpdateCLientScreen
 import clsDeleteClientScreenUI from "../ClientBankScreenUI/clsDeleteClientScreenUI";
 import clsFindClientScreenUI from "../ClientBankScreenUI/clsFindClientScreenUI";
 import clsTransactionBaseMainScreenUI from "./clsTransactionBaseMainScreenUI";
+import clsManageUsersBaseScreenUI from "./clsManageUsersBaseScreenUI";
 
 export enum enOption {
   showListClients = 1,
@@ -16,7 +17,8 @@ export enum enOption {
   DeleteClient = 4,
   FindCLient = 5,
   TransactionMenu = 6,
-  EnScreen   =7 ,
+  ManageUsersMenu = 7 ,
+  EnScreen   =8 ,
 }
 
 export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
@@ -84,6 +86,14 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
 
   }
 
+  private static async _ManageUserMenu():Promise<void>
+  {
+
+     // await clsTransactionBaseMainScreenUI.ShowTransactionMenu() ;
+     await clsManageUsersBaseScreenUI.ShowManageUsersMenu() ;
+
+  }
+
   private static _EndScreen():void
   {
 
@@ -132,6 +142,14 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
          await   clsBaseMainScreenUI._TransactionMenu();
             clsBaseMainScreenUI._GobackToMainMenu() ;
             break;
+
+            //
+
+            case enOption.ManageUsersMenu:
+              clsBaseMainScreenUI.ClearScreen() ;
+           await   clsBaseMainScreenUI._ManageUserMenu();
+              clsBaseMainScreenUI._GobackToMainMenu() ;
+              break;
 
         case enOption.EnScreen:
           clsBaseMainScreenUI.ClearScreen() ;

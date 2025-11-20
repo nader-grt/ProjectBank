@@ -1,3 +1,4 @@
+import controllerGetAllCLient from "../../controllers/ClientBankController/GetAllClientController";
 import clsBaseScreenUI from "../clsBaseScreenUI";
 
 
@@ -10,5 +11,7 @@ export default class clsBalanceTotalScreenUI  extends clsBaseScreenUI
            {
 
                     clsBaseScreenUI._DrawScreenHeader("\t Total Balance of clients \t \n ")
+
+                    await controllerGetAllCLient.DisplayClientWithBalanceTotal()  ;
            }
 }

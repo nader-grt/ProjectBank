@@ -87,5 +87,24 @@ export class clsBankClientUseCase extends clsPersonUseCase {
 
  await clsHandleFile.Save(client) ;
   }
+
+
+
+  public static async GetTotalBalance():Promise<number>
+  {
+
+               let totalBalance :number = 0 ;
+               let ele :clsBankClientUseCase ;
+   const listClients:clsBankClientUseCase[] = await clsHandleFile.LoadDataFromFile();
+
+
+          for( ele  of listClients)
+          {
+
+           totalBalance += ele.getBalanceAccount ;
+          }
+         
+   return totalBalance
+  }
  
 }
