@@ -1,32 +1,28 @@
+
 import clsHandleFileUser from "../../filesystem/clsHandleFileUser";
+import { GlobalCurrentUser } from "../../infra/currentUser";
 import { enMode } from "../ClientBankUseCase/clsBankClientUseCase";
 import clsPersonUseCase from "../PersonUseCase/clsPersonUseCase";
 
-export enum enPermissionUser
+
+
+export enum enPermission
 {
-    enAllPermissionUser = -1 ,
-    enAddPermissionUser = 1,
-    enUPdatePermissionUser = 2,
-    enDeletePermissionUser = 4,
-    enShowPermissionUser = 8,
-    enFindPermissionUser = 16 ,
-    enListPermissionUser =32,
+   
+        eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4,
+        pUpdateClients = 8, pFindClient = 16, pTranactions = 32, pManageUsers = 64
+    
+}
 
 
-} ;
 
-
-/**
- 
-  
- */
 
 
 export default class clsUser extends clsPersonUseCase
 {
 
             private _ModeUser:enMode = enMode.EmptyMode ;
-            private _enPermission :enPermissionUser = enPermissionUser.enAllPermissionUser ;
+            private _enPermission :enPermission = enPermission.eAll ;
 
             private _UserName :string = "" ;
             private  _Password :string = "";
@@ -80,5 +76,89 @@ export default class clsUser extends clsPersonUseCase
 
                 await clsHandleFileUser.SaveUserToFile(user)
             }
+
+            public  async _DeleteUser(user:clsUser):Promise<void>
+            {
+
+                await clsHandleFileUser._DeleteUserFromFile(user)
+
+            }
+
+            public static async _FindUserByUserName(userName:string):Promise<clsUser>
+            {
+
+                const listUser:clsUser[] = await clsHandleFileUser.loadUsersFromFileUser() ;
+                          
+                for(const user of listUser)
+                {
+                     if(user.getUserName === userName)
+                     {
+                         return user as clsUser ;
+                     }
+                }
+                return new clsUser(enMode.EmptyMode,"","","","", "", "",-1) ;
+            }
+
+            public static async _FindUserByUserNameAndPassword(userName:string,password:string):Promise<clsUser>
+            {
+
+                const listUser:clsUser[] = await clsHandleFileUser.loadUsersFromFileUser() ;
+                          
+                for(const user of listUser)
+                {
+                     if(user.getUserName === userName && user.getPassword === password)
+                     {
+                         return user as clsUser ;
+                     }
+                }
+                return new clsUser(enMode.EmptyMode,"","","","", "", "",-1) ;
+            }
+
+
+            public static async _updateUserFromFile(newUser:clsUser,oldUser : clsUser):Promise<void>
+            {
+              let listUsers :clsUser[]  =       await clsHandleFileUser.loadUsersFromFileUser()  ;
+  
+                                 await clsHandleFileUser._DeleteUserFromFile(oldUser)  ;
+                                      await clsHandleFileUser.SaveUserToFile(newUser)  ;
+  
+            }
+
+
+
+            public static async  isEmptyUser(userName:string,Password:string):Promise<boolean>
+            {
+                    
+                let isValid :boolean = (await clsUser._FindUserByUserNameAndPassword(userName,Password)).getUserName != "" && (await clsUser._FindUserByUserNameAndPassword(userName,Password)).getPassword != "" ;
+                  
+
+               // console.log("object************************ \t " , isValid)  ;
+                
+                
+                if(isValid)
+                   {
+                        return true ;
+                   }
+
+                return false ;
+            }
+
+            public  getEmptyUser():clsUser
+            {
+        
+                return new clsUser(enMode.EmptyMode,"","","","", "", "",-1) ;
+            }
+
+        public    checkAccessPermission(permission: enPermission): boolean {
+
+               
+            
+                
+                if ((GlobalCurrentUser.CurrentUser.getPermission & permission) === permission)
+                {
+                    return true ;
+                }else
+                    return false ;
+              }
 
 }

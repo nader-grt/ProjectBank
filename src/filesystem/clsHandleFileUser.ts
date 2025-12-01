@@ -102,4 +102,35 @@ export default class clsHandleFileUser
                     console.log("error ",error)
                    }
           }
+
+          public static async _DeleteUserFromFile(user:clsUser):Promise<void>
+          {
+            let listUsers :clsUser[]  =       await this.loadUsersFromFileUser()  ;
+
+            listUsers = listUsers.filter(u => u.getUserName !== user.getUserName);
+            
+            const filePath = path.join(__dirname, "userlist.txt");
+                try{
+                      
+                     await fs.writeFile(filePath, '', { encoding: 'utf8' });
+                       for(const user of listUsers)
+                       {
+
+                        let line :string  =  await this._ConverUsetToline(user)  ;
+
+                     //   console.log("object line",line)
+                         await  fs.appendFile(  filePath  ,`${line} \n`,  {flag:"a", encoding: 'utf8' });
+
+
+                       }
+
+                }catch(error)
+                {
+                   console.error(" error  ",error)
+                }
+
+          }
+
+
+       
 }

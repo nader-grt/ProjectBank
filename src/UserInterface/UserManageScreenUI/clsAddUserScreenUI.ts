@@ -1,7 +1,7 @@
 import clsAddUserController from "../../controllers/UserController/clsAddUserController";
 import clsInputValidate from "../../packageUsing/clsInputValidate";
 import { enMode } from "../../useCases/ClientBankUseCase/clsBankClientUseCase";
-import clsUser, { enPermissionUser } from "../../useCases/UserUseCase/clsUser";
+import clsUser, { enPermission } from "../../useCases/UserUseCase/clsUser";
 import clsBaseScreenUI from "../clsBaseScreenUI";
 
 
@@ -14,13 +14,60 @@ export default class clsAddUserScreenUI  extends clsBaseScreenUI
 {
 
 
-                             private static async _ReadPermissionOption():Promise<void>
+                             private static async _ReadPermissionOption():Promise<number>
                              {
 
-                                let numPermission :number = 0 ;
-                                let totalPermission :enPermissionUser = enPermissionUser.enAllPermissionUser ;
-                                numPermission    =    Number( clsInputValidate.ReadString("  Enter  Permission \n")) ;
-                               // numPermission as enPermissionUser
+
+                         
+                                   let resultPermission :string  = "" ;
+
+                                let totalPermission :number = 0 ;
+                          
+                               console.log(" Enter  Permission \n")
+                               resultPermission =    clsInputValidate.ReadString(" Do you have full access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.eAll ;
+                                   }
+
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have list client  access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pListClients ;
+                                   }
+
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have add new client access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pAddNewClient ;
+                                   }
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have delete client access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pDeleteClient ;
+                                   }
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have update client access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pUpdateClients ;
+                                   }
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have find client access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pFindClient ;
+                                   }
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have transactions access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pTranactions ;
+                                   }
+                                   resultPermission =    clsInputValidate.ReadString(" Do you have manage users access yes or no  \n");
+                                   if (resultPermission.toLowerCase() == "yes")
+                                   {
+                                        totalPermission = totalPermission  + enPermission.pManageUsers ;
+                                   }
+
+                               return totalPermission
                              }
 
 
@@ -36,17 +83,14 @@ export default class clsAddUserScreenUI  extends clsBaseScreenUI
                         user.setPhone = clsInputValidate.ReadString("    Enter phone  \n");
                         user.setUserName = clsInputValidate.ReadString("  Enter  User Name  \n");
                         user.setPassword = clsInputValidate.ReadString("  Enter  Password  \n");
-                        let permission :string = "" ;
+                        let permission :number=0 ;
                       
-                        permission  = clsInputValidate.ReadString("  Enter  Permission \n");
-                        user.setPermission  = +permission ;
+                        permission  = await  this._ReadPermissionOption();
+                        user.setPermission  = permission ;
+
+                               
                              return user ;
 
-                             /**
-                              * Number(
-        clsInputValidate.ReadString("Enter Permission \n")
-    );
-                              */
 
                       
                       }
@@ -55,7 +99,16 @@ export default class clsAddUserScreenUI  extends clsBaseScreenUI
                       private static async _PrintInfoUser(user:clsUser):Promise<void>
                       {
 
-                        
+                        console.log(" User Info : \n")  ;
+                         console.log(` FirstName : ${user.getFirstName}  \n`)  ;
+                         console.log(` LastName : ${user.getLastName}  \n`)  ;
+                         console.log(` Email : ${user.getEmail}  \n`)  ;
+                         console.log(` Phone : ${user.getPhone}  \n`)  ;
+                         console.log(` UserName : ${user.getUserName}  \n`)  ;
+                         console.log(` Password : ${user.getPassword}  \n`)  ;
+                         console.log(` Permission : ${user.getPermission}  \n`)  ;
+                         
+                         
                       }
 
 
@@ -67,6 +120,8 @@ export default class clsAddUserScreenUI  extends clsBaseScreenUI
 
                                     
                          await     clsAddUserController.AddNewUser(user)  ;
+
+                         await this._PrintInfoUser(user)  ;
 
                             
 

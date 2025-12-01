@@ -2,7 +2,8 @@ import clsAddClientController from "../../controllers/ClientBankController/AddCl
 import clsInputValidate from "../../packageUsing/clsInputValidate";
 import { clsBankClientUseCase, enMode } from "../../useCases/ClientBankUseCase/clsBankClientUseCase";
 import clsBaseScreenUI from "../clsBaseScreenUI";
-
+import GlobalCurrentUserClass, { GlobalCurrentUser } from "../../infra/currentUser";
+import { enPermission } from "../../useCases/UserUseCase/clsUser";
 export default class clsAddClientScreenUI extends clsBaseScreenUI
 {
 
@@ -37,6 +38,8 @@ export default class clsAddClientScreenUI extends clsBaseScreenUI
 
             public static async AddClient():Promise<void>
             {
+
+         //     if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pAddNewClient) )return
                 clsBaseScreenUI._DrawScreenHeader("\t\tAdd New Client") ;
 
                 const AccountNumber = clsInputValidate.ReadString(

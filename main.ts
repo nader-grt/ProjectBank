@@ -1,14 +1,16 @@
 
 
-import clsBaseMainScreenUI from "./src/UserInterface/BaseUserInterface/clsBaseMainScreenUI";
+import clsLogin from "./src/UserInterface/BaseUserInterface/clsLoginScreenUI";
 
 async function main() {
   try {
-    // work with UI
+  
 
-   await clsBaseMainScreenUI.showMainMenu();
+   
 
-    // const client = await FindClientController.find("A101");
+   
+      await clsLogin.ShowLoginScreen();
+   
 
   } catch (err) {
     console.error(err);

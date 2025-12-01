@@ -2,6 +2,9 @@ import clsInputValidate from "../../packageUsing/clsInputValidate";
 import clsBaseScreenUI from "../clsBaseScreenUI";
 import clsAddUserScreenUI from "../UserManageScreenUI/clsAddUserScreenUI";
 import clsAllUsersScreenUI from "../UserManageScreenUI/clsAllUsersScreenUI";
+import clsDeleteUserScreenUI from "../UserManageScreenUI/clsDeleteUserScreenUI";
+import clsFindUserScreenUI from "../UserManageScreenUI/clsFindUserScreenUI";
+import clsUpdateUserScreenUI from "../UserManageScreenUI/clsUpdateUserScreenUI";
 import clsBaseMainScreenUI from "./clsBaseMainScreenUI";
 
 import * as readlineSync from "readline-sync";
@@ -53,7 +56,9 @@ export default class clsManageUsersBaseScreenUI extends clsBaseScreenUI {
    private static async   _UpdateUser():Promise<void>
    {
 
-    console.log("update  USER")
+   // console.log("update  USER")
+
+     await clsUpdateUserScreenUI.ShowUpdateUserScreen()  ;
    }
 
    private static async   _GetUser():Promise<void>
@@ -67,12 +72,16 @@ export default class clsManageUsersBaseScreenUI extends clsBaseScreenUI {
    private static async   _DeleteUser():Promise<void>
    {
 
-    console.log("delete USER")
+    
+
+      await clsDeleteUserScreenUI.ShowDeleteUserScreenUI()  ;
    }
 
    private static async   _FindUser():Promise<void>
    {
-    console.log(" find USER")
+  //  console.log(" find USER")
+
+    await  clsFindUserScreenUI.FindUser()  ;
 
    }
 
@@ -128,8 +137,8 @@ export default class clsManageUsersBaseScreenUI extends clsBaseScreenUI {
     console.log("".padEnd(37, " ") + "\t[1] Add New User Manage.\n");
     console.log("".padEnd(37, " ") + "\t[2] Update User Manage.\n");
     console.log("".padEnd(37, " ") + "\t[3] Get User Manage.\n");
-    console.log("".padEnd(37, " ") + "\t[3] Get User Manage.\n");
-    console.log("".padEnd(37, " ") + "\t[5] Delete User Manage.\n");
+    console.log("".padEnd(37, " ") + "\t[4] Delete User Manage.\n");
+   // console.log("".padEnd(37, " ") + "\t[5] UPdate User Manage.\n");
     console.log("".padEnd(37, " ") + "\t[5] Find User Manage.\n");
     console.log("".padEnd(37, " ") + "\t[6] Main Menu.\n");
     console.log(

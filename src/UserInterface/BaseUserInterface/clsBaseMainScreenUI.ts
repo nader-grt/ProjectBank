@@ -9,6 +9,8 @@ import clsDeleteClientScreenUI from "../ClientBankScreenUI/clsDeleteClientScreen
 import clsFindClientScreenUI from "../ClientBankScreenUI/clsFindClientScreenUI";
 import clsTransactionBaseMainScreenUI from "./clsTransactionBaseMainScreenUI";
 import clsManageUsersBaseScreenUI from "./clsManageUsersBaseScreenUI";
+import clsUser, { enPermission } from "../../useCases/UserUseCase/clsUser";
+import { GlobalCurrentUser } from "../../infra/currentUser";
 
 export enum enOption {
   showListClients = 1,
@@ -52,8 +54,11 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
   }
 
   private static  async _showListClient() {
-   
+       
+   // clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pListClients) ;
 
+    if(!await  clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pListClients))return 
+    clsBaseMainScreenUI.ClearScreen() ;
     await clsGetAllClientScreenUI.GetAllClientListScreen(); 
    
   }
@@ -61,27 +66,59 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
   private static async  _AddNewClient():Promise<void> {
     
 
-      await clsAddClientScreenUI.AddClient()
+   // clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pAddNewClient) ;
+try
+{
+
+  if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pAddNewClient) )return
+ // clsBaseMainScreenUI.ClearScreen() ;
+
+    await clsAddClientScreenUI.AddClient()
+}catch(error)
+{
+  console.log("Error : "+ error) ;
+}
   }
 
   private static async  _UpdateClient():Promise<void> {
+   // clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pUpdateClients) ;
+
+    if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pUpdateClients)) return
+    clsBaseMainScreenUI.ClearScreen() ;
      await  clsUpdateCLientScreenUI.UpdateClient()
   }
 
   private static async  _DeleteClient() {
+    
+
+    if( !await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pDeleteClient)) return 
+    clsBaseMainScreenUI.ClearScreen() ;
     await clsDeleteClientScreenUI.DeleteCLient()
   }
 
-  private static async _FindClient():Promise<void>
+  private static async _FindClient():Promise<void >
   {
-    
-      await clsFindClientScreenUI.FindClient()
+
+                 try{
+                  let found:boolean = await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pFindClient) ;
+                  if(!found)
+                    {
+                    return  ;
+                     // break ;
+                    }
+                    await clsFindClientScreenUI.FindClient()
+                 }catch(ex)
+                 {
+                    console.log("Error : "+ ex) ;
+                 }
 
   }
 
   private static async _TransactionMenu():Promise<void>
   {
 
+          if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pTranactions) ) return
+          clsBaseMainScreenUI.ClearScreen() ;
       await clsTransactionBaseMainScreenUI.ShowTransactionMenu() ;
 
   }
@@ -90,16 +127,28 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
   {
 
      // await clsTransactionBaseMainScreenUI.ShowTransactionMenu() ;
+
+     if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pManageUsers) ) return
+     clsBaseMainScreenUI.ClearScreen() ;
      await clsManageUsersBaseScreenUI.ShowManageUsersMenu() ;
 
   }
 
-  private static _EndScreen():void
-  {
+  // private static _EndScreen():void
+  // {
 
-    console.log("end system ") ;
-    readlineSync.keyInPause();
-    clsBaseMainScreenUI.ClearScreen() ;
+  //   console.log("end system ") ;
+  //   readlineSync.keyInPause();
+  //   clsBaseMainScreenUI.ClearScreen() ;
+
+  // }
+
+
+  private static  async  _Logout():Promise<void>
+  {
+    GlobalCurrentUser.CurrentUser  = await clsUser._FindUserByUserNameAndPassword("","")  ;
+   
+   // clsBaseMainScreenUI.ClearScreen() ;
 
   }
 
@@ -153,7 +202,8 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
 
         case enOption.EnScreen:
           clsBaseMainScreenUI.ClearScreen() ;
-          clsBaseMainScreenUI._EndScreen();
+          //clsBaseMainScreenUI._EndScreen();
+        await  clsBaseMainScreenUI._Logout();
          
           break;
 
@@ -183,5 +233,6 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
     );
 
   await  clsBaseMainScreenUI.StartChooseFromMainMenuOption();
+  //clsBaseMainScreenUI.ClearScreen() ;
   }
 }
