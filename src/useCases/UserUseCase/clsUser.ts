@@ -10,7 +10,7 @@ export enum enPermission
 {
    
         eAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4,
-        pUpdateClients = 8, pFindClient = 16, pTranactions = 32, pManageUsers = 64
+        pUpdateClients = 8, pFindClient = 16, pTranactions = 32, pManageUsers = 64,pUserLog=128
     
 }
 
@@ -151,10 +151,12 @@ export default class clsUser extends clsPersonUseCase
 
         public    checkAccessPermission(permission: enPermission): boolean {
 
-               
+               //(( GlobalCurrentUser.CurrentUser.getPermission === enPermission.pUserLog) ===   ( enPermission.pUserLog  ===permission))
             
+
+              // console.log("object************************ \t " , (( GlobalCurrentUser.CurrentUser.getPermission === enPermission.pUserLog) ===   ( enPermission.pUserLog  ===permission)) )  ;
                 
-                if ((GlobalCurrentUser.CurrentUser.getPermission & permission) === permission)
+                if ((GlobalCurrentUser.CurrentUser.getPermission & permission) === permission || ( ( enPermission.pUserLog  === permission)))
                 {
                     return true ;
                 }else

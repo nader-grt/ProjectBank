@@ -21,7 +21,11 @@ export default class clsUpdateUserScreenUI  extends clsBaseScreenUI
       resultPermission =    clsInputValidate.ReadString(" Do you have full access yes or no  \n");
           if (resultPermission.toLowerCase() == "yes")
           {
-               return  enPermission.eAll ;
+
+               totalPermission = totalPermission  + enPermission.eAll || enPermission.pUserLog ;
+               return totalPermission ;
+
+              // return  enPermission.eAll ;
           }
 
           resultPermission =    clsInputValidate.ReadString(" Do you have list client  access yes or no  \n");

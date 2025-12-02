@@ -80,6 +80,8 @@ export class clsBankClientUseCase extends clsPersonUseCase {
 
  await clsHandleFile.Save(client) ;
   }
+
+
   public  async  Withdraw(amount:number,client:clsBankClientUseCase) {
        
     this._BalanceAccount -= amount ;
@@ -88,6 +90,32 @@ export class clsBankClientUseCase extends clsPersonUseCase {
  await clsHandleFile.Save(client) ;
   }
 
+
+  public  static  async  TransfertAmountFromTo(amount:number,clientFrom:clsBankClientUseCase,clientTo:clsBankClientUseCase) {
+       
+  //  this._BalanceAccount -= amount ;
+         
+
+    await   clientFrom.Withdraw(amount,clientFrom) ;
+
+    await   clientTo.Deposite(amount,clientTo) ;
+
+ await clsHandleFile.Save(clientFrom) ;
+  await clsHandleFile.Save(clientTo) ;
+  }
+
+  public    async  TransfertAmount(amount:number,clientTo:clsBankClientUseCase) {
+       
+    //  this._BalanceAccount -= amount ;
+           
+  
+       await  this.Withdraw(amount,this) ;
+  
+      await   clientTo.Deposite(amount,clientTo) ;
+  
+  //  await clsHandleFile.Save(clientFrom) ;
+  //   await clsHandleFile.Save(clientTo) ;
+    }
 
 
   public static async GetTotalBalance():Promise<number>

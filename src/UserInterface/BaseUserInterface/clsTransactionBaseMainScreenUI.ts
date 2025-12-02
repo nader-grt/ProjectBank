@@ -2,6 +2,10 @@ import clsInputValidate from "../../packageUsing/clsInputValidate";
 import clsBaseScreenUI from "../clsBaseScreenUI";
 import clsBalanceTotalScreenUI from "../TransactionBankScreenUI/clsBalanceTotalScreenUI";
 import clsDepositeScreenUI from "../TransactionBankScreenUI/clsDepositeScreenUI";
+import clsLogTransfertAmountBetweenClientScreenUI from "../TransactionBankScreenUI/clsLogTransfertAmountBetweenClientScreenUI";
+import clsLogTransfertAmountBetweenClients from "../TransactionBankScreenUI/clsLogTransfertAmountBetweenClientScreenUI";
+import clsTransfetAmountBetweenClientScreenUI from "../TransactionBankScreenUI/clsTransfetAmountBetweenClientScreenUI";
+import clsTransfetAmountBetweenClients from "../TransactionBankScreenUI/clsTransfetAmountBetweenClientScreenUI";
 import clsWithDrawScreenUI from "../TransactionBankScreenUI/clsWithDrawScreenUI";
 import clsBaseMainScreenUI from "./clsBaseMainScreenUI";
 
@@ -12,7 +16,9 @@ export enum enOptionTransaction
     DepositTransaction =1 ,
               WithdrawTransaction =2 ,
               TotalBalanceTransaction =3,
-              MainMenu =4,
+              TransfertAmountBetweenClient =4,
+              LogAmountTransfert =5,
+              MainMenu =6,
 
 }
 
@@ -27,7 +33,7 @@ export default class clsTransactionBaseMainScreenUI extends clsBaseScreenUI  // 
     private static    _ReadTransactionMenuNumber(): number {
         let num: number = clsInputValidate.ReadNumberBetweenStartEnd(
           1,
-          4,
+          6,
           "Choose Way you want enter "
         );
         return num;
@@ -78,6 +84,21 @@ export default class clsTransactionBaseMainScreenUI extends clsBaseScreenUI  // 
 
       }
 
+      private static async  _TransfertAmountBetweenClient()   :Promise<void>
+      {
+       
+
+        await clsTransfetAmountBetweenClientScreenUI.TransferAmountBetweenClients()
+
+      }
+      private static async  _LogTransfertAmountBetweenClient()   :Promise<void>
+      {
+       
+
+        await clsLogTransfertAmountBetweenClientScreenUI.LogTransfertAmountBetweenClients()
+
+      }
+
                private static async  _StartTransaction()
                {
                      let num :number =       this._ReadTransactionMenuNumber()  ;
@@ -101,6 +122,20 @@ export default class clsTransactionBaseMainScreenUI extends clsBaseScreenUI  // 
                                 this. _GoBackTransactionMenu() ;
                             
                             break;
+
+                            case enOptionTransaction.TransfertAmountBetweenClient:
+                              clsTransactionBaseMainScreenUI.ClearScreen() ;
+                              await this._TransfertAmountBetweenClient()  ;
+                              this. _GoBackTransactionMenu() ;
+                          
+                          break;
+
+                          case enOptionTransaction.LogAmountTransfert:
+                            clsTransactionBaseMainScreenUI.ClearScreen() ;
+                            await this._LogTransfertAmountBetweenClient()  ;
+                            this. _GoBackTransactionMenu() ;
+                        
+                        break;
                             case enOptionTransaction.MainMenu:
                                 clsTransactionBaseMainScreenUI.ClearScreen()
                              this._GoBackMainMenu()
@@ -123,7 +158,9 @@ export default class clsTransactionBaseMainScreenUI extends clsBaseScreenUI  // 
                         console.log("".padEnd(37, " ") + "\t[1] Deposit.\n");
                         console.log("".padEnd(37, " ") + "\t[2] Withdraw.\n");
                         console.log("".padEnd(37, " ") + "\t[3] Total Balance.\n");
-                        console.log("".padEnd(37, " ") + "\t[4] Main Menu.\n");
+                        console.log("".padEnd(37, " ") + "\t[4] Transfer Amount From Two Client.\n");
+                        console.log("".padEnd(37, " ") + "\t[5] Log Amount Transfert Two Client.\n");
+                        console.log("".padEnd(37, " ") + "\t[6] Main Menu.\n");
                         console.log(
                           "".padEnd(37, " ") + "===========================================\n"
                         );

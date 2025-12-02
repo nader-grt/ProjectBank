@@ -11,6 +11,7 @@ import clsTransactionBaseMainScreenUI from "./clsTransactionBaseMainScreenUI";
 import clsManageUsersBaseScreenUI from "./clsManageUsersBaseScreenUI";
 import clsUser, { enPermission } from "../../useCases/UserUseCase/clsUser";
 import { GlobalCurrentUser } from "../../infra/currentUser";
+import clsLogUserScreenUI from "../LogUserScreenUI/clsLogUserScreenUI";
 
 export enum enOption {
   showListClients = 1,
@@ -20,7 +21,8 @@ export enum enOption {
   FindCLient = 5,
   TransactionMenu = 6,
   ManageUsersMenu = 7 ,
-  EnScreen   =8 ,
+  AllLogUserInSystem = 8,
+  EnScreen   =9 ,
 }
 
 export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
@@ -47,7 +49,7 @@ export default class clsBaseMainScreenUI extends  clsBaseScreenUI {
   private static _ReadMainMenuNumber(): number {
     let num: number = clsInputValidate.ReadNumberBetweenStartEnd(
       1,
-      8,
+      9,
       "Choose Way you want enter "
     );
     return num;
@@ -143,6 +145,22 @@ try
 
   // }
 
+//clsLogUserScreenUI
+
+
+
+private static  async  _ShowAllUsersLogInSystem():Promise<void>
+{
+ // GlobalCurrentUser.CurrentUser  = await clsUser._FindUserByUserNameAndPassword("","")  ;
+ 
+
+ if(!await clsBaseScreenUI.isAccessRIghtsGranted(enPermission.pUserLog) ) return
+ clsBaseMainScreenUI.ClearScreen() ;
+  await   clsLogUserScreenUI.DisplayLogUserScreen() ;
+ // clsBaseMainScreenUI.ClearScreen() ;
+
+}
+
 
   private static  async  _Logout():Promise<void>
   {
@@ -200,6 +218,14 @@ try
               clsBaseMainScreenUI._GobackToMainMenu() ;
               break;
 
+
+              case enOption.AllLogUserInSystem:
+                clsBaseMainScreenUI.ClearScreen() ;
+                //clsBaseMainScreenUI._EndScreen();
+              await  clsBaseMainScreenUI._ShowAllUsersLogInSystem();
+              clsBaseMainScreenUI._GobackToMainMenu() ;
+                break;
+
         case enOption.EnScreen:
           clsBaseMainScreenUI.ClearScreen() ;
           //clsBaseMainScreenUI._EndScreen();
@@ -227,7 +253,8 @@ try
     console.log("".padEnd(37, " ") + "\t[5] Find Client.\n");
     console.log("".padEnd(37, " ") + "\t[6] Transactions.\n");
     console.log("".padEnd(37, " ") + "\t[7] Manage Users.\n");
-    console.log("".padEnd(37, " ") + "\t[8] Logout.\n");
+    console.log("".padEnd(37, " ") + "\t[8] Show All Users Log In System.\n");
+    console.log("".padEnd(37, " ") + "\t[9] Logout.\n");
     console.log(
       "".padEnd(37, " ") + "===========================================\n"
     );
